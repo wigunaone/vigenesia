@@ -1,150 +1,3 @@
-// import 'package:flutter/material.dart';
-// import '../services/artikel_service.dart';
-// import '../ui/base.dart';
-// import '../model/artikel.dart';
-
-// class ArtikelForm extends StatefulWidget {
-//   const ArtikelForm({Key? key, required this.type, this.id}) : super(key: key);
-//   // ignore: prefer_typing_uninitialized_variables
-//   final type;
-//   // ignore: prefer_typing_uninitialized_variables
-//   final id;
-//   @override
-//   State<ArtikelForm> createState() => _ArtikelFormState();
-// }
-
-// class _ArtikelFormState extends State<ArtikelForm> {
-//   Artikel? artikel;
-//   final _formKey = GlobalKey<FormState>();
-//   String _type = '';
-//   String id = '';
-//   String image = '';
-//   final _judulCtrl = TextEditingController();
-//   final _artikelCtrl = TextEditingController();
-//   final _imageCtrl = TextEditingController();
-
-//   Future getData(id) async {
-//     Artikel data = await ArtikelService().getById(id);
-//     // ignore: unnecessary_this
-//     this.setState(() {
-//       _judulCtrl.text = data.judul;
-//       _artikelCtrl.text = data.artikel;
-//     });
-//     return data;
-//   }
-
-//   @override
-//   void initState() {
-//     setState(() {
-//       _type = widget.type;
-
-//       id = widget.id;
-//       if (widget.type == 'edit') {
-//         getData(id);
-//       }
-//     });
-
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: SingleChildScrollView(
-//             child: Column(
-//       children: [
-//         Row(
-//           children: [
-//             FloatingActionButton(
-//               onPressed: () {
-//                 Navigator.pop(context);
-//               },
-//               backgroundColor: const Color(0xFF64C1DF),
-//               child: const Icon(
-//                 Icons.arrow_back,
-//                 size: 20,
-//                 color: Colors.black,
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-//               child: Text(
-//                 _type.toUpperCase(),
-//                 textAlign: TextAlign.center,
-//                 style: const TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//         Form(
-//           key: _formKey,
-//           child: Container(
-//             padding: const EdgeInsets.only(left: 20, right: 20),
-//             child: Column(
-//               children: [
-//                 _fieldTitle(),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 _fieldDescription(),
-//                 const SizedBox(
-//                   height: 20,
-//                 ),
-//                 _tombolSimpan()
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//     )));
-//   }
-
-//   _fieldTitle() {
-//     return TextField(
-//       decoration: const InputDecoration(labelText: "Judul"),
-//       controller: _judulCtrl,
-//     );
-//   }
-
-//   _fieldDescription() {
-//     return TextField(
-//       decoration: const InputDecoration(labelText: "Artikel"),
-//       controller: _artikelCtrl,
-//     );
-//   }
-
-//   _tombolSimpan() {
-//     return ElevatedButton(
-//         onPressed: () async {
-//           // Artikel artikel =
-//           //     Artikel(judul: _judulCtrl.text, artikel: _artikelCtrl.text, image: _imageCtrl.text);
-//           // if (_type == 'edit') {
-//           //   // ignore: unused_local_variable
-//           //   var update = await ArtikelService()
-//           //       .update(artikel, id)
-//           //       .then((value) => Navigator.push(
-//           //           // ignore: use_build_context_synchronously
-//           //           context,
-//           //           MaterialPageRoute(
-//           //             builder: (context) => const Base(),
-//           //           )));
-//           // } else {
-//           //   // ignore: unused_local_variable
-//           //   var tambah =
-//           //       await ArtikelService().save(artikel).then((value) => Navigator.push(
-//           //           // ignore: use_build_context_synchronously
-//           //           context,
-//           //           MaterialPageRoute(
-//           //             builder: (context) => const Base(),
-//           //           )));
-//           // }
-//         },
-//         child: const Text("Simpan"));
-//   }
-// }
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -187,9 +40,11 @@ class _ArtikelFormState extends State<ArtikelForm> {
 
   Future getData(id) async {
     Artikel data = await ArtikelService().getById(id);
+    print(data);
     setState(() {
       _judulCtrl.text = data.judul;
       _artikelCtrl.text = data.artikel;
+      image = data.image;
     });
     return data;
   }
@@ -198,6 +53,8 @@ class _ArtikelFormState extends State<ArtikelForm> {
   void initState() {
     super.initState();
     setState(() {
+      print(widget.type + ' type');
+      print(widget.id + ' id');
       _type = widget.type;
       id = widget.id;
       _loadUserID();
@@ -243,9 +100,10 @@ class _ArtikelFormState extends State<ArtikelForm> {
   _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       Artikel artikel = Artikel(
+        id: id,
         judul: _judulCtrl.text,
         artikel: _artikelCtrl.text,
-        image: _imageCtrl.text, 
+        image: _imageCtrl.text == '' ? image : _imageCtrl.text , 
         idUser: userId,
         created: '', 
         updated: '', // Gambar yang di-upload
@@ -253,17 +111,11 @@ class _ArtikelFormState extends State<ArtikelForm> {
 
       if (_type == 'edit') {
         await ArtikelService().update(artikel, id).then((value) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Base()),
-          );
+          Navigator.pop(context);
         });
       } else {
         await ArtikelService().save(artikel).then((value) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Base()),
-          );
+          Navigator.pop(context);
         });
       }
     }
@@ -317,7 +169,7 @@ class _ArtikelFormState extends State<ArtikelForm> {
                   children: [
                     _fieldTitle(),
                     const SizedBox(height: 20),
-                    _fieldDescription(),
+                    _fieldDescription(),  // Updated to TextArea
                     const SizedBox(height: 20),
                     _fieldImage(),
                     const SizedBox(height: 20),
@@ -340,9 +192,17 @@ class _ArtikelFormState extends State<ArtikelForm> {
   }
 
   _fieldDescription() {
-    return TextField(
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Artikel"),
       controller: _artikelCtrl,
+      maxLines: 5,  // Set the maximum number of lines
+      keyboardType: TextInputType.multiline,  // Allow multiline input
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Deskripsi artikel tidak boleh kosong';
+        }
+        return null;  // Return null if the value is valid
+      },
     );
   }
 
@@ -373,3 +233,4 @@ class _ArtikelFormState extends State<ArtikelForm> {
     );
   }
 }
+

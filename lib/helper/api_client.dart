@@ -46,7 +46,7 @@ class ApiClient {
       throw Exception(e.message);
     }
   }
-  // Fungsi untuk upload gambar ke server
+// Fungsi untuk upload gambar ke server
   Future<Response> uploadImage(String path, File imageFile) async {
     try {
       // Menyiapkan data untuk dikirimkan ke server

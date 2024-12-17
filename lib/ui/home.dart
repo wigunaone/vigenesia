@@ -414,22 +414,37 @@ class _HomeState extends State<Home> {
 
   // Menampilkan Motivasi dalam Horizontal Carousel
   Widget _motivasiCarousel() {
-    return dataMotivasi.isEmpty
-        ? const Center(child: CircularProgressIndicator()) // Placeholder saat data motivasi kosong
-        : CarouselSlider(
-            options: CarouselOptions(
-              height: 200.0,
-              enlargeCenterPage: true,
-              autoPlay: true,
-              aspectRatio: 16 / 9,
-              autoPlayInterval: const Duration(seconds: 5),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              viewportFraction: 0.8,
-            ),
-            items: dataMotivasi.map((motivasi) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Card(
+  return dataMotivasi.isEmpty
+      ? const Center(child: CircularProgressIndicator()) // Placeholder saat data motivasi kosong
+      : CarouselSlider(
+          options: CarouselOptions(
+            height: 200.0,
+            enlargeCenterPage: true,
+            autoPlay: true,
+            aspectRatio: 16 / 9,
+            autoPlayInterval: const Duration(seconds: 5),
+            autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            viewportFraction: 0.8,
+          ),
+          items: dataMotivasi.map((motivasi) {
+            return Builder(
+              builder: (BuildContext context) {
+                return InkWell(
+                  onTap: () {
+                    // Navigate to the Motivasi detail page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailView(
+                          type: 'Motivasi',
+                          title: motivasi.judul,
+                          description: motivasi.isi_motivasi,
+                          imageSource: baseUrl + 'upload/motivasi/' + motivasi.image,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -507,12 +522,13 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                  );
-                },
-              );
-            }).toList(),
-          );
-  }
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        );
+}
 
   // Menampilkan Artikel dalam ListView
   Widget _artikelListView() {

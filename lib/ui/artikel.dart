@@ -61,10 +61,20 @@ class _ArtikelViewState extends State<ArtikelView> {
   }
 
   // Handle deleting an article
-  onDelete(id) async {
-    var delete = await ArtikelService().delete(id);
-    getData(); // Refresh data after delete
+  Future<void> onDelete(id) async {
+  // Call the delete method
+  var result = await ArtikelService().delete(id);
+
+  if (result['status'] == 'success') {
+    // Handle the successful deletion
+    print('Item deleted: ${result['message']}');
+    // Optionally, refresh the list or navigate back
+    getData(); // Refresh the data after successful deletion
+  } else {
+    // Handle the error case
+    print('Error deleting item: ${result['message']}');
   }
+}
 
   // Navigate to edit screen for an article
   onEdit(id) {
@@ -114,38 +124,43 @@ class _ArtikelViewState extends State<ArtikelView> {
               ),
             ),
           ),
-          // PopupMenuButton for filter options
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: const EdgeInsets.only(right: 0.0),
             child: PopupMenuButton<String>(
-        onSelected: (String value) {
-          setState(() {
-            filterType = value;
-          });
-          getData(); // Refresh data based on selected filter
-        },
-        itemBuilder: (BuildContext context) => [
-          PopupMenuItem<String>(
-            value: 'all',
-            child: Text(
-              'All Articles',
-              style: TextStyle(
-                color: filterType == 'all' ? Colors.grey[700] : Colors.black, // Darker color when 'all' is selected
-              ),
+              onSelected: (String value) {
+                setState(() {
+                  filterType = value;
+                });
+                getData(); // Refresh data based on selected filter
+              },
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem<String>(
+                  value: 'all',
+                  child: Container(
+                    color: Colors.white, // Set the background color to white
+                    child: Text(
+                      'All Articles',
+                      style: TextStyle(
+                        color: filterType == 'all' ? Colors.grey[700] : Colors.black, // Change text color when selected
+                      ),
+                    ),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'user',
+                  child: Container(
+                    color: Colors.white, // Set the background color to white
+                    child: Text(
+                      'Articles by User',
+                      style: TextStyle(
+                        color: filterType == 'user' ? Colors.grey[700] : Colors.black, // Change text color when selected
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              child: Icon(Icons.filter_list),
             ),
-          ),
-          PopupMenuItem<String>(
-            value: 'user',
-            child: Text(
-              'Articles by User',
-              style: TextStyle(
-                color: filterType == 'user' ? Colors.grey[700] : Colors.black, // Darker color when 'user' is selected
-              ),
-            ),
-          ),
-        ],
-        child: Icon(Icons.filter_list),
-      ),
 
           ),
         ],
