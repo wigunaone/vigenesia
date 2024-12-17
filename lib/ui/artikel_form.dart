@@ -277,15 +277,23 @@ class _ArtikelFormState extends State<ArtikelForm> {
           children: [
             Row(
               children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  backgroundColor: const Color(0xFF64C1DF),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    size: 20,
-                    color: Colors.black,
+                
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, left: 20.0), // Add top and left margin
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder( // Use a custom shape
+                      borderRadius: BorderRadius.circular(50), // Circular button with radius 50
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Padding(
@@ -359,7 +367,7 @@ class _ArtikelFormState extends State<ArtikelForm> {
     return ElevatedButton(
       onPressed: () async {
         await _uploadImage(); // Upload gambar sebelum simpan artikel
-        _submitForm();
+        await _submitForm();
       },
       child: const Text("Simpan"),
     );

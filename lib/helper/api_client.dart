@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 const String baseUrl = 'http://10.0.2.2/vigenesia_api/';
-// const String baseUrl = 'http://192.168.18.75/vigenesia_api/';
+// const String baseUrl = 'http://192.168.203.39/vigenesia_api/';
 
 final Dio dio = Dio(BaseOptions(
     // baseUrl: 'http://192.168.18.77:3000/api/',

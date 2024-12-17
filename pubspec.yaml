@@ -68,7 +68,17 @@ flutter:
     - assets/icon_motivation.png
     - assets/icon_article.png
   #   - images/a_dot_ham.jpeg
-
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+          style: italic
+    - family: RadioCanada
+      fonts:
+        - asset: assets/fonts/RadioCanada-VariableFont_wdth,wght.ttf
+        - asset: assets/fonts/RadioCanada-Italic-VariableFont_wdth,wght.ttf
+          style: italic
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

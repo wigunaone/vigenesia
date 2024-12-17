@@ -29,18 +29,7 @@ class DetailView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Title
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(height: 8.0),
-
-              // Image
+               // Image
               Container(
                 width: double.infinity,
                 height: 250.0, // Sesuaikan dengan tinggi gambar
@@ -58,13 +47,29 @@ class DetailView extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               
+              // Title
+              Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'RadioCanada',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 8.0),
+
+             
               Text(
                 description,
                 style: TextStyle(
+                  fontFamily: 'Inter',
                   fontSize: 16.0,
-                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+
                 ),
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.left,
               ),
             ],
           ),
